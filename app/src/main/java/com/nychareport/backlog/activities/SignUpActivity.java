@@ -35,6 +35,7 @@ public class SignUpActivity extends Activity {
     private EditText mEditTextUsernameCreate, mEditTextEmailCreate;
     private String mUserName, mUserEmail, mPassword;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
