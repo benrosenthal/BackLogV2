@@ -1,5 +1,7 @@
 package com.nychareport.backlog.activities;
 
+import android.app.DialogFragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -21,17 +23,20 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.nychareport.backlog.Constants;
 import com.nychareport.backlog.R;
+import com.nychareport.backlog.fragments.DetailedProblemFragment;
 import com.nychareport.backlog.misc.Utils;
 import com.nychareport.backlog.adapter.ProblemPostAdapter;
 import com.nychareport.backlog.models.Problem;
+import com.nychareport.backlog.viewholder.PostProblemViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomePageActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, PostProblemViewHolder.OnClickListener {
 
     private static final String TAG = PostProblemActivity.class.getSimpleName();
 
@@ -40,6 +45,7 @@ public class HomePageActivity extends AppCompatActivity
     private List<Problem> postsList;
 
     private Firebase postsRef;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +55,9 @@ public class HomePageActivity extends AppCompatActivity
         postsList = new ArrayList<>();
         setSupportActionBar(toolbar);
         setTitle("Home Feed");
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        postsRef = new Firebase(Constants.FIREBASE_URL_POSTS);
 
         ImageView fab = (ImageView) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -72,9 +81,8 @@ public class HomePageActivity extends AppCompatActivity
         postsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         postsRecyclerView.addItemDecoration(new ItemSpacingDecoration(10));
 
-        postsAdapter = new ProblemPostAdapter(postsList);
+        postsAdapter = new ProblemPostAdapter(postsList, this);
         postsRecyclerView.setAdapter(postsAdapter);
-        postsRef = new Firebase(Constants.FIREBASE_URL_POSTS);
         setupFirebaseDataListners();
     }
 
@@ -88,6 +96,7 @@ public class HomePageActivity extends AppCompatActivity
                 if (dataSnapshot != null && dataSnapshot.getValue() != null) {
                     try {
                         Problem model = dataSnapshot.getValue(Problem.class);
+                        model.setProblemID(dataSnapshot.getKey());
                         postsList.add(model);
                         postsAdapter.notifyItemInserted(postsList.size() - 1);
                     } catch (Exception ex) {
@@ -168,6 +177,18 @@ public class HomePageActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onCardClick(View view, Problem problemItem) {
+        Log.d("GGGGG", "Clicked card");/*
+        Bundle bundle = new Bundle();
+        bundle.putString("card_id", problemItem.getProblemID());
+        mFirebaseAnalytics.logEvent("card_click_from_feed", bundle);*/
+        // Create and show the dialog.
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        DialogFragment newFragment = DetailedProblemFragment.newInstance(problemItem);
+        newFragment.show(ft, "dialog");
     }
 
     private class ItemSpacingDecoration extends RecyclerView.ItemDecoration {

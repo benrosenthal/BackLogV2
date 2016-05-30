@@ -30,24 +30,28 @@ import java.util.List;
 public class ProblemPostAdapter extends RecyclerView.Adapter<PostProblemViewHolder> {
 
     private List<Problem> mDataSet;
+    private PostProblemViewHolder.OnClickListener onClickListener;
+
     /**
      * Called when a view has been clicked.
      *
      * @param problemSet Dataset of posts made by users
      */
-    public ProblemPostAdapter(List<Problem> problemSet) {
+    public ProblemPostAdapter(List<Problem> problemSet, PostProblemViewHolder.OnClickListener onClickListener) {
         mDataSet = problemSet;
+        this.onClickListener = onClickListener;
     }
 
     @Override
     public PostProblemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new PostProblemViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.problem_post, parent, false));
+                .inflate(R.layout.problem_post, parent, false), this.onClickListener);
     }
 
     @Override
     public void onBindViewHolder(final PostProblemViewHolder holder, int position) {
         Problem problem = mDataSet.get(position);
+        holder.problemItem = problem;
         holder.problemTitle.setText(problem.getProblem());
         holder.problemDescription.setText(problem.getProblemDescription());
         holder.problemLocation.setText(problem.getProblemLocation());
@@ -57,7 +61,6 @@ public class ProblemPostAdapter extends RecyclerView.Adapter<PostProblemViewHold
         } else {
             holder.timeCreated.setVisibility(View.GONE);
         }
-        holder.problemDescription.setText(problem.getProblemDescription());
         final File file = new File(
                 Environment.getExternalStorageDirectory().toString() + "/" + problem.getProblemPic());
         if (!file.exists()) {

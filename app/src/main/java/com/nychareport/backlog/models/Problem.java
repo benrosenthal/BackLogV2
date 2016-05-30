@@ -15,6 +15,7 @@ import java.util.HashMap;
 public class Problem implements Parcelable {
 
     private String problem;
+    private String problemID;
     private String description;
     private String location;
     private String problemPic;
@@ -86,6 +87,12 @@ public class Problem implements Parcelable {
         return timestampCreated;
     }
 
+    public String getProblemID() {
+        return this.problemID;
+    }
+    public void setProblemID(String problemID) {
+        this.problemID = problemID;
+    }
     @JsonIgnore
     public long getTimestampCreatedLong() {
 
