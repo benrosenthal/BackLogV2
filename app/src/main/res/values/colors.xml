@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#2CDAB3</color>
     <color name="grey">#EDEEEF</color>
     <color name="dark_green">#388E3C</color>
 
@@ -21,6 +21,7 @@
     <color name="google">#C6412C</color>
     <color name="ultra_dark_overlay">#0D29303F</color>
     <color name="ultra_dark_15">#2629303F</color>
+    <color name="ultra_dark">#29303F</color>
     <!--TODO : Better way to handle alpha of defined color-->
     <color name="medium">#94989F</color>
     <color name="medium_90">#E694989F</color>

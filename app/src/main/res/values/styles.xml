@@ -30,6 +30,18 @@
         <item name="android:layout_margin">2dp</item>
     </style>
 
+    <style name="problemCard">
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="cardCornerRadius">4dp</item>
+        <item name="cardElevation">2dp</item>
+        <item name="cardUseCompatPadding">true</item>
+    </style>
+
+    <style name="problemCard.hero">
+        <item name="android:background">#EFF0F4</item>
+        <item name="android:minHeight">200dp</item>
+    </style>
+
     <style name="LoginCreateText">
         <item name="android:textSize">@dimen/login_buttons_text_size</item>
         <item name="android:textColor">@android:color/white</item>
@@ -38,26 +50,32 @@
 
     <style name="postMiddleComponent"></style>
 
-    <style name="postTextTitle" parent="postMiddleComponent">
-        <item name="android:paddingLeft">12dp</item>
-        <item name="android:paddingRight">12dp</item>
-        <item name="android:paddingBottom">6dp</item>
-        <item name="android:paddingTop">6dp</item>
-        <item name="typeface">@string/typeface_bold</item>
+    <style name="problemCardTitle">
+        <item name="android:layout_marginLeft">13dp</item>
+        <item name="android:layout_marginRight">13dp</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/dark</item>
-        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/ultra_dark</item>
+        <item name="typeface">@string/typeface_bold</item>
     </style>
 
-    <style name="postTextDescription" parent="postMiddleComponent">
-        <item name="android:paddingLeft">12dp</item>
-        <item name="android:paddingRight">12dp</item>
-        <item name="android:paddingBottom">6dp</item>
-        <item name="android:paddingTop">0dp</item>
-        <item name="typeface">@string/typeface_regular</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:ellipsize">end</item>
+    <style name="problemCardHeadline">
+        <item name="android:layout_height">56dp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/dark</item>
+        <item name="android:gravity">center_vertical|left</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_marginLeft">13dp</item>
+        <item name="android:layout_marginRight">13dp</item>
+        <item name="typeface">@string/typeface_regular</item>
+    </style>
+
+    <style name="problemCardDescription">
+        <item name="android:layout_marginLeft">13dp</item>
+        <item name="android:layout_marginRight">13dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/dark</item>
+        <item name="typeface">@string/typeface_regular</item>
     </style>
 
     <style name="HintText">

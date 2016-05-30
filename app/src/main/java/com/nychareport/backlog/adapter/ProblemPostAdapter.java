@@ -58,29 +58,35 @@ public class ProblemPostAdapter extends RecyclerView.Adapter<PostProblemViewHold
             holder.timeCreated.setVisibility(View.GONE);
         }
         holder.problemDescription.setText(problem.getProblemDescription());
-        final File file = new File(Environment.getExternalStorageDirectory().toString() + "/" + problem.getProblemPic());
-        // Initiate the download
-        TransferObserver observer = AWSUtils.getTransferUtility(BackLogApplication.getCurrentInstance())
-                .download(Constants.BUCKET_NAME, problem.getProblemPic(), file);
-        observer.setTransferListener(new TransferListener() {
-            @Override
-            public void onStateChanged(int id, TransferState state) {
-                if (state == TransferState.COMPLETED) {
-                    Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
-                    holder.attachedProblemImage.setImageBitmap(bitmap);
+        final File file = new File(
+                Environment.getExternalStorageDirectory().toString() + "/" + problem.getProblemPic());
+        if (!file.exists()) {
+            // Initiate the download
+            TransferObserver observer = AWSUtils.getTransferUtility(BackLogApplication.getCurrentInstance())
+                    .download(Constants.BUCKET_NAME, problem.getProblemPic(), file);
+            observer.setTransferListener(new TransferListener() {
+                @Override
+                public void onStateChanged(int id, TransferState state) {
+                    if (state == TransferState.COMPLETED) {
+                        Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
+                        holder.attachedProblemImage.setImageBitmap(bitmap);
+                    }
                 }
-            }
 
-            @Override
-            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                @Override
+                public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
 
-            }
+                }
 
-            @Override
-            public void onError(int id, Exception ex) {
+                @Override
+                public void onError(int id, Exception ex) {
 
-            }
-        });
+                }
+            });
+        } else {
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
+            holder.attachedProblemImage.setImageBitmap(bitmap);
+        }
     }
 
     @Override
