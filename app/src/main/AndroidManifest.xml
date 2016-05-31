@@ -18,6 +18,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.LoginActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -28,21 +29,28 @@
         </activity>
         <activity
             android:name=".activities.SignUpActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_sign_up"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.UserOnboardingActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_user_onboarding"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.MainActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.PostProblemActivity" />
+        <activity
+            android:name=".activities.PostProblemActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.HomePageActivity"
             android:label="@string/title_activity_home_page"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait" />
         <service
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
             android:enabled="true" />
