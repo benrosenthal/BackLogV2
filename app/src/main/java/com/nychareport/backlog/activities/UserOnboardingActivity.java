@@ -52,7 +52,7 @@ public class UserOnboardingActivity extends Activity implements AdapterView.OnIt
             public void onClick(View v) {
                 if (selectedDevelopment != null && !selectedDevelopment.isEmpty()) {
                     mSharedPrefEditor.putString(Constants.KEY_HOUSING_DEVELOPMENT, selectedDevelopment).apply();
-                    Intent intent = new Intent(UserOnboardingActivity.this, HomePageActivity.class);
+                    Intent intent = new Intent(UserOnboardingActivity.this, TabbedHomeActivity.class);
                     startActivity(intent);
                     finish();
                 }
