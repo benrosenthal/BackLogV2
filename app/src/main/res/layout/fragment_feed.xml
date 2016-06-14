@@ -5,9 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.nychareport.backlog.activities.HomePageActivity"
-    android:background="@color/medium_30"
-    tools:showIn="@layout/app_bar_home_page">
+    tools:context="com.nychareport.backlog.activities.TabbedHomeActivity"
+    android:background="@color/medium_30">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/posts"

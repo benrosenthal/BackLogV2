@@ -423,4 +423,6 @@
     </string-array>
     <string name="title_activity_home_page">HomePageActivity</string>
     <string name="title_activity_change_password">ChangePasswordActivity</string>
+    <string name="title_activity_tabbed_home">TabbedHomeActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>

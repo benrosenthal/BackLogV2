@@ -1,6 +1,8 @@
-package com.nychareport.backlog.activities;
+package com.nychareport.backlog.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,15 +10,17 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -24,7 +28,6 @@ import android.widget.Toast;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferType;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -39,10 +42,11 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 
-
-public class PostProblemActivity extends AppCompatActivity implements View.OnClickListener {
-
-    private static final String LOG_TAG = PostProblemActivity.class.getSimpleName();
+/**
+ * Created by gaurav.kaushik on 14/06/16.
+ */
+public class PostProblemFragment extends Fragment implements View.OnClickListener {
+    private static final String LOG_TAG = PostProblemFragment.class.getSimpleName();
 
     private View postButton;
     private View loadFromGalleryButton;
@@ -59,31 +63,37 @@ public class PostProblemActivity extends AppCompatActivity implements View.OnCli
 
     // The TransferUtility is the primary class for managing transfer to S3
     private TransferUtility transferUtility;
+    public PostProblemFragment() {
+        super();
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_problem);
-        setTitle("Create a Post");
         mFirebaseRef = new Firebase(Constants.FIREBASE_URL);
 
         // Initializes TransferUtility, always do this before using it.
-        transferUtility = AWSUtils.getTransferUtility(this);
+        transferUtility = AWSUtils.getTransferUtility(getActivity());
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(BackLogApplication.getCurrentInstance());
-        String development = sharedPreferences.getString(Constants.KEY_HOUSING_DEVELOPMENT, null);
-        initalizeViews();
-        problemLocation.setText(development);
     }
 
-    private void initalizeViews() {
-        postButton = (View) findViewById(R.id.btn_done);
-        loadFromCameraButton = (View) findViewById(R.id.btn_camera);
-        loadFromGalleryButton = (View) findViewById(R.id.btn_gallery);
-        problemTitle = (EditText) findViewById(R.id.et_problem_title);
-        problemLocation = (EditText) findViewById(R.id.et_problem_location);
-        problemDescription = (EditText) findViewById(R.id.et_problem_description);
-        attachedImage = (ImageView) findViewById(R.id.iv_attached_image);
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_post_problem, container, false);
+        initalizeViews(rootView);
+
+        return rootView;
+    }
+    private void initalizeViews(View rootView) {
+        postButton = (View) rootView.findViewById(R.id.btn_done);
+        loadFromCameraButton = (View) rootView.findViewById(R.id.btn_camera);
+        loadFromGalleryButton = (View) rootView.findViewById(R.id.btn_gallery);
+        problemTitle = (EditText) rootView.findViewById(R.id.et_problem_title);
+        problemLocation = (EditText) rootView.findViewById(R.id.et_problem_location);
+        problemDescription = (EditText) rootView.findViewById(R.id.et_problem_description);
+        attachedImage = (ImageView) rootView.findViewById(R.id.iv_attached_image);
 
         loadFromCameraButton.setOnClickListener(this);
         loadFromGalleryButton.setOnClickListener(this);
@@ -145,32 +155,32 @@ public class PostProblemActivity extends AppCompatActivity implements View.OnCli
                 uploadRef.setValue(problem, new Firebase.CompletionListener() {
                     @Override
                     public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                        Snackbar.make(findViewById(android.R.id.content), "You just posted an issue", Snackbar.LENGTH_LONG)
+                        Snackbar.make(getActivity().findViewById(android.R.id.content), "You just posted an issue", Snackbar.LENGTH_LONG)
                                 .setActionTextColor(BackLogApplication.getCurrentInstance().getResources().getColor(R.color.fluorescent_green))
                                 .show();
                     }
-            });
+                });
                 break;
         }
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+    public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
         switch(requestCode) {
             case Constants.REQUEST_CODE_LOAD_FROM_CAMERA:
-                if(resultCode == RESULT_OK){
+                if(resultCode == Activity.RESULT_OK){
                     Bitmap bp = (Bitmap) imageReturnedIntent.getExtras().get("data");
                     attachedImage.setImageBitmap(bp);
                 }
                 break;
             case Constants.REQUEST_CODE_LOAD_FROM_GALLERY:
-                if(resultCode == RESULT_OK){
+                if(resultCode == Activity.RESULT_OK){
                     Uri uri = imageReturnedIntent.getData();
                     attachedImage.setImageURI(uri);
                     try {
                         attachedImagePath = getPath(uri);
                     } catch (URISyntaxException e) {
-                        Toast.makeText(this,
+                        Toast.makeText(getActivity(),
                                 "Unable to get the file from the given URI.  See error log for details",
                                 Toast.LENGTH_LONG).show();
                         Log.e(LOG_TAG, "Unable to upload file from the given uri", e);
@@ -185,7 +195,7 @@ public class PostProblemActivity extends AppCompatActivity implements View.OnCli
          */
     private void beginUpload(String filePath) {
         if (filePath == null) {
-            Toast.makeText(this, "Could not find the filepath of the selected file",
+            Toast.makeText(getActivity(), "Could not find the filepath of the selected file",
                     Toast.LENGTH_LONG).show();
             return;
         }
@@ -212,7 +222,7 @@ public class PostProblemActivity extends AppCompatActivity implements View.OnCli
         String[] selectionArgs = null;
         // Uri is different in versions after KITKAT (Android 4.4), we need to
         // deal with different Uris.
-        if (needToCheckUri && DocumentsContract.isDocumentUri(getApplicationContext(), uri)) {
+        if (needToCheckUri && DocumentsContract.isDocumentUri(getActivity().getApplicationContext(), uri)) {
             if (AWSUtils.isExternalStorageDocument(uri)) {
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
@@ -244,7 +254,7 @@ public class PostProblemActivity extends AppCompatActivity implements View.OnCli
             };
             Cursor cursor = null;
             try {
-                cursor = getContentResolver()
+                cursor = getActivity().getContentResolver()
                         .query(uri, projection, selection, selectionArgs, null);
                 int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 if (cursor.moveToFirst()) {
@@ -281,4 +291,5 @@ public class PostProblemActivity extends AppCompatActivity implements View.OnCli
             Log.d(LOG_TAG, "onStateChanged: " + id + ", " + newState);
         }
     }
+
 }
