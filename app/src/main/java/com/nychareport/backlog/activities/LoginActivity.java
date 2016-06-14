@@ -109,7 +109,7 @@ public class LoginActivity extends Activity {
                 mAuthProgressDialog.dismiss();
 
                 /**
-                 * If there is a valid session to be restored, start MainActivity.
+                 * If there is a valid session to be restored, start TabbedHomeActivity.
                  * No need to pass data via SharedPreferences because app
                  * already holds userName/provider data from the latest session
                  */
@@ -222,7 +222,7 @@ public class LoginActivity extends Activity {
             Log.i(LOG_TAG, provider + " " + getString(R.string.log_message_auth_successful));
 
             if (authData != null) {
-                /* Save provider name and encodedEmail for later use and start MainActivity */
+                /* Save provider name and encodedEmail for later use and start TabbedHomeActivity */
                 mSharedPrefEditor.putString(Constants.KEY_PROVIDER, authData.getProvider()).apply();
                 mSharedPrefEditor.putString(Constants.KEY_ENCODED_EMAIL, mEncodedEmail).apply();
                 /**
