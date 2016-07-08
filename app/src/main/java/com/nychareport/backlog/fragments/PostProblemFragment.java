@@ -158,6 +158,7 @@ public class PostProblemFragment extends Fragment implements View.OnClickListene
                         Snackbar.make(getActivity().findViewById(android.R.id.content), "You just posted an issue", Snackbar.LENGTH_LONG)
                                 .setActionTextColor(BackLogApplication.getCurrentInstance().getResources().getColor(R.color.fluorescent_green))
                                 .show();
+
                     }
                 });
                 break;
