@@ -1,7 +1,6 @@
 package com.nychareport.backlog.activities;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -11,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-import com.firebase.client.Firebase;
 import com.nychareport.backlog.BackLogApplication;
 import com.nychareport.backlog.Constants;
 import com.nychareport.backlog.R;
@@ -52,9 +50,9 @@ public class UserOnboardingActivity extends Activity implements AdapterView.OnIt
             public void onClick(View v) {
                 if (selectedDevelopment != null && !selectedDevelopment.isEmpty()) {
                     mSharedPrefEditor.putString(Constants.KEY_HOUSING_DEVELOPMENT, selectedDevelopment).apply();
-                    Intent intent = new Intent(UserOnboardingActivity.this, TabbedHomeActivity.class);
-                    startActivity(intent);
-                    finish();
+//                    Intent intent = new Intent(UserOnboardingActivity.this, TabbedHomeActivity.class);
+//                    startActivity(intent);
+//                    finish();
                 }
             }
         });
